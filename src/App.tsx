@@ -1,24 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import CustomHeader, {addNumber} from './components/CustomHeader'
+import Counter from "./components/Counter";
+
+const App = () => {
+    const addedNumber = addNumber(1,2);
+    const [changeNumber, setChangedNumber] = React.useState(0);
+
+    const handleNumberChange = (newNumber: number) =>{
+        setChangedNumber(newNumber);
+    }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <CustomHeader>
+            <Counter onNumberChange={handleNumberChange} initialNumber={50} />
+            {
+                changeNumber > 0 && (<div>liczba jest wieksza od 0</div>)
+            }
+        </CustomHeader>
     </div>
   );
 }
