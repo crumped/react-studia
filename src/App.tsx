@@ -15,9 +15,12 @@ const App = () => {
   return (
     <div className="App">
         <CustomHeader>
-            <Counter onNumberChange={handleNumberChange} initialNumber={50} />
+            <Counter onNumberChange={handleNumberChange} initialNumber={10} />
             {
-                changeNumber > 0 && (<div>liczba jest wieksza od 0</div>)
+                (changeNumber > 15 && (<div>liczba przekroczona</div>)) || (changeNumber > 10 && (<div>liczba jest wieksza od 10</div>))
+            }
+            {
+                changeNumber < -10 && (<div>Liczba jest mniejsza od -10</div>)
             }
         </CustomHeader>
     </div>
