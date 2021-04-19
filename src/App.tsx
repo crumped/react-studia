@@ -3,6 +3,7 @@ import './App.css';
 
 import CustomHeader, {addNumber} from './components/CustomHeader'
 import Counter from "./components/Counter";
+import Button from "./components/Button";
 
 const App = () => {
     const addedNumber = addNumber(1,2);
@@ -15,7 +16,7 @@ const App = () => {
   return (
     <div className="App">
         <CustomHeader>
-            <Counter onNumberChange={handleNumberChange} initialNumber={50} />
+            <Button onNumberChange={handleNumberChange} initialNumber={50} />
             {
                 changeNumber > 0 && (<div>liczba jest wieksza od 0</div>)
             }
