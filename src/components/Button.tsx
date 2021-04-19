@@ -31,6 +31,11 @@ const Counter: React.FC<ButtonProps> = ({ initialNumber, onNumberChange }) => {
         setCounterNumber(number);
         onNumberChange && onNumberChange(number);
     }
+    const reset = () => {
+        const number = 50
+        setCounterNumber(number);
+        onNumberChange && onNumberChange(number);
+    }
 
     return (
         <div>
@@ -38,6 +43,7 @@ const Counter: React.FC<ButtonProps> = ({ initialNumber, onNumberChange }) => {
             <button onClick={decrementNumber}>-</button>
             <button onClick={multiplyNumber}>*</button>
             <button onClick={divideNumber}>/</button>
+            <button onClick={reset}>reset</button>
             {counterNumber}
         </div>
     );
