@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Switch, Route, BrowserRouter} from "react-router-dom";
+import { Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
 
 import Main from './views/main/index';
 import Login from './views/login/index';
@@ -46,7 +46,7 @@ const App = () => {
                 <Switch>
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={SignUp} />
-                    <Route path="*" component={Page404} />
+                    <Route path="*" ><Redirect to="/login" /></Route>
                 </Switch>
             </BrowserRouter>
         )
