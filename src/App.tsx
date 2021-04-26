@@ -1,30 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { Switch, Route, BrowserRouter} from "react-router-dom";
+
+import Main from './views/main/index';
+import Login from './views/login/index';
+import SignUp from './views/signup/index';
+import Page404 from './views/page404/index';
+import {GetCookieFunction} from "./functions/Cookies";
+
 import './App.css';
 
-import CustomHeader, {addNumber} from './components/CustomHeader'
-import Counter from "./components/Counter";
-import Button from "./components/Button";
 
 const App = () => {
-    const addedNumber = addNumber(1,2);
-    const [changeNumber, setChangedNumber] = React.useState(0);
+    //set cookie
+    //TODO make as global function.
 
-    const handleNumberChange = (newNumber: number) =>{
-        setChangedNumber(newNumber);
-    }
+    const [loggedIn, setLoggedIn] = useState(false)
+
+
+    const CheckIfLoggedIn = () => {
+        let username = GetCookieFunction();
+        if(!!username){
+            //TODO
+            //Check if user exist in database
+
+            setLoggedIn(true);
+        } else {
+            setLoggedIn(false);
+        }
+    };
+
+    React.useEffect(() => CheckIfLoggedIn(), [CheckIfLoggedIn])
 
   return (
+
     <div className="App">
-        <CustomHeader>
-            <Button onNumberChange={handleNumberChange} initialNumber={50} />
-            <Counter onNumberChange={handleNumberChange} initialNumber={10} />
-            {
-                (changeNumber > 15 && (<div>liczba przekroczona</div>)) || (changeNumber > 10 && (<div>liczba jest wieksza od 10</div>))
-            }
-            {
-                changeNumber < -10 && (<div>Liczba jest mniejsza od -10</div>)
-            }
-        </CustomHeader>
+        {loggedIn ? (
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/" component={Main} exact />
+                    <Route path="*" component={Page404} />
+                </Switch>
+            </BrowserRouter>
+        ) : (
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/login" component={Login} />
+                    <Route path="/signup" component={SignUp} />
+                    <Route path="*" component={Page404} />
+                </Switch>
+            </BrowserRouter>
+        )
+        }
     </div>
   );
 }

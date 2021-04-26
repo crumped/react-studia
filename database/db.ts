@@ -13,3 +13,8 @@ db.close((err) => {
     }
     console.log('Close the database connection.');
 });
+
+// insert('table', 'values1, etc', 'where condition)
+// update
+// select
+// delete
