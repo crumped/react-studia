@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Switch, Route, BrowserRouter} from "react-router-dom";
 
+import Layout from "./components/Layout";
 import Main from './views/main/index';
 import Login from './views/login/index';
 import SignUp from './views/signup/index';
@@ -9,11 +10,11 @@ import {GetCookieFunction} from "./functions/Cookies";
 
 
 import './App.css';
+import Logout from "./views/logout";
 
 
 const App = () => {
     //set cookie
-    //TODO make as global function.
 
 
     const [loggedIn, setLoggedIn] = useState(false)
@@ -34,26 +35,27 @@ const App = () => {
     React.useEffect(() => CheckIfLoggedIn(), [CheckIfLoggedIn])
 
   return (
-
-    <div className="App">
-        {loggedIn ? (
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/" component={Main} exact />
-                    <Route path="*" component={Page404} />
-                </Switch>
-            </BrowserRouter>
-        ) : (
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/login" component={Login} />
-                    <Route path="/signup" component={SignUp} />
-                    <Route path="*" component={Page404} />
-                </Switch>
-            </BrowserRouter>
-        )
-        }
-    </div>
+      <Layout isLoggedIn={loggedIn}>
+          <div>Test</div>
+          {loggedIn ? (
+              <BrowserRouter>
+                  <Switch>
+                      <Route path="/" component={Main} exact />
+                      <Route path="/logout" component={Logout}  />
+                      <Route path="*" component={Page404} />
+                  </Switch>
+              </BrowserRouter>
+          ) : (
+              <BrowserRouter>
+                  <Switch>
+                      <Route path="/login" component={Login} />
+                      <Route path="/signup" component={SignUp} />
+                      <Route path="*" component={Page404} />
+                  </Switch>
+              </BrowserRouter>
+          )
+          }
+      </Layout>
   );
 }
 
