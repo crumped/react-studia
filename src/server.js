@@ -12,20 +12,6 @@ let db = new sqlite3.Database('./Storage/database.db', sqlite3.OPEN_READWRITE, (
     console.log('Connected to the database.');
 });
 
-const Insert = (table: any, value: any, ...args: any[]) =>
-{
-    let db = OpenDB();
-
-    db.exec("INSERT INTO ? VALUES(?)", table, value, (err: { message: any; }) =>{
-        if(err) {
-            console.error(err.message);
-            console.log("Error in insert to database");
-        }
-    });
-
-    CloseDB(db);
-}
-
 db.close()
 
 
