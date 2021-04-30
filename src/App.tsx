@@ -7,12 +7,14 @@ import SignUp from './views/signup/index';
 import Page404 from './views/page404/index';
 import {GetCookieFunction} from "./functions/Cookies";
 
+
 import './App.css';
 
 
 const App = () => {
     //set cookie
     //TODO make as global function.
+
 
     const [loggedIn, setLoggedIn] = useState(false)
 

@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3').verbose();
 
-export const OpenDB = () =>
+const OpenDB = () =>
 {
-    let db = new sqlite3.Database('./database/database.db', sqlite3.OPEN_READWRITE, (err) => {
+    let db = new sqlite3.Database('./Storage/database.db', sqlite3.OPEN_READWRITE, (err: { message: any; }) => {
         if (err) {
             return console.error(err.message);
         }
@@ -11,9 +11,9 @@ export const OpenDB = () =>
     return db;
 }
 
-export const CloseDB = (db) =>
+const CloseDB = (db: { close: (arg0: (err: { message: any; }) => void) => void; }) =>
 {
-    db.close((err) => {
+    db.close((err: { message: any; }) => {
         if (err) {
             return console.error(err.message);
         }
@@ -21,25 +21,13 @@ export const CloseDB = (db) =>
     });
 }
 
-export const Insert = (table, value, ...args) =>
+
+
+export const Select = (table: any, select: any, where="") =>
 {
     let db = OpenDB();
 
-    db.exec("INSERT INTO ? VALUES(?)", table, value, (err) =>{
-        if(err) {
-            console.error(err.message);
-            console.log("Error in insert to database");
-        }
-    });
-
-    CloseDB(db);
-}
-
-export const Select = (table, select, where="") =>
-{
-    let db = OpenDB();
-
-    let query = db.get("SELECT ? FROM ? WHERE ?", select, table, where, (err) =>{
+    let query = db.get("SELECT ? FROM ? WHERE ?", select, table, where, (err: { message: any; }) =>{
         if(err)
         {
             console.error(err.message);
@@ -51,11 +39,11 @@ export const Select = (table, select, where="") =>
     return query;
 }
 
-export const Delete = (table, fields, where) =>
+export const Delete = (table: any, fields: any, where: any) =>
 {
     let db = OpenDB();
 
-    let query = db.exec("UPDATE ? SET ? WHERE ?", table,fields, where, (err) => {
+    let query = db.exec("UPDATE ? SET ? WHERE ?", table,fields, where, (err: { message: any; }) => {
         if(err){
             console.error(err.message);
             console.log("Error in Delete statement");
