@@ -14,6 +14,8 @@ let db = new sqlite3.Database('./Storage/database.db', sqlite3.OPEN_READWRITE, (
 
 db.close()
 
-
+app.get('/ping', (req, res) => {
+    return res.send('pong')
+})
 
 app.listen(process.env.PORT || 8080);
