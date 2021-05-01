@@ -6,7 +6,7 @@ import Login from './views/login/index';
 import SignUp from './views/signup/index';
 import Page404 from './views/page404/index';
 import {GetCookieFunction} from "./functions/Cookies";
-
+import {Select} from "./server/databaseManager"
 
 import './App.css';
 
@@ -15,7 +15,7 @@ const App = () => {
     //set cookie
     //TODO make as global function.
 
-
+    var db = Select("user", "*", "")
     const [loggedIn, setLoggedIn] = useState(false)
 
 

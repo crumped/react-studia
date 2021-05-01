@@ -1,21 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
+
+var manager =require('./server/databaseManager');
+
 const app = express();
 
-var sqlite3 = require('sqlite3').verbose()
 
-let db = new sqlite3.Database('./Storage/database.db', sqlite3.OPEN_READWRITE, (err) => {
-    if (err) {
-        return console.error(err.message);
-    }
-    console.log('Connected to the database.');
+var router = express.Router();
+app.get('/', function(req, res) {
+    res.json({ message: 'API - Servidor Listo...' });
 });
-
-db.close()
-
-app.get('/ping', (req, res) => {
-    return res.send('pong')
+var blabla = function(req, res ){
+    var koko = manager.Select("user","*","");
+    return koko.json();
+}
+app.get('/select_user', (req, res) => {
+    manager.Select(req, res, "user","*","");
 })
 
-app.listen(process.env.PORT || 8080);
+app.get('/ping', (req, res) => {
+    return res.send('pong');
+})
+
+app.listen(process.env.PORT || 8081);
