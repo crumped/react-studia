@@ -48,7 +48,7 @@ const App = () => {
           ) : (
               <BrowserRouter>
                   <Switch>
-                      <Route path="/login" component={Login} />
+                      <Route path="/login" component={() => <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
                       <Route path="/signup" component={SignUp} />
                       <Route path="*" component={Page404} />
                   </Switch>
