@@ -2,15 +2,15 @@ import React, {useState} from 'react';
 import { Switch, Route, BrowserRouter} from "react-router-dom";
 
 import Layout from "./components/Layout";
-import Main from './views/main/index';
-import Login from './views/login/index';
-import SignUp from './views/signup/index';
-import Page404 from './views/page404/index';
+import Main from './views/main/Main';
+import Login from './views/login/Login';
+import SignUp from './views/signup/Signup';
+import Page404 from './views/page404/page404';
 import {GetCookieFunction} from "./functions/Cookies";
 
 
 import './App.css';
-import Logout from "./views/logout";
+import Logout from "./views/logout/Logout";
 
 
 const App = () => {
