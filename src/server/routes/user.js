@@ -12,9 +12,7 @@ router.get('/:login/:password', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    var where="user_name="+req.body.login+" AND password="+req.body.password;
-    console.log(req);
-    console.log(res);
+    var where="user_name = '"+req.body.login+"' AND password = '"+req.body.password+"'";
     console.log(req.body);
     console.log(where);
     var koko = manager.Select(req, res, "user", "*", where);

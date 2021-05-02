@@ -23,7 +23,8 @@ exports.Insert = function(req, res, table, values){
 
 exports.Select = function(req, res, table, select="*", where=""){
 
-    var rows = db.all(`SELECT ${select} FROM ${table}`, (err,rows) => {
+    console.log(where);
+    var rows = db.all(`SELECT ${select} FROM ${table} WHERE ${where};`, (err,rows) => {
         if (err) {
                 console.error(err.message);
                 console.log("Error in select");
@@ -31,7 +32,7 @@ exports.Select = function(req, res, table, select="*", where=""){
         console.log(rows);
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
         res.send(rows);
     });
 }

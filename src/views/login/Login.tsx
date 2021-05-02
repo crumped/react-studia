@@ -11,6 +11,7 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const history = useHistory();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [message, setMessage] = useState("")
     const ValidLoginForm = () => {
         console.log(username+" "+password);
         fetch("http://localhost:8083/user/", {
@@ -42,8 +43,10 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
                 }
                 else
                 {
-                    throw new Error("Nie zalogowano, uzytkownik nie istnieje");
+                    setMessage("niezalogowany")
+                    console.log(message);
                 }
+
             })
 
     };
@@ -63,6 +66,11 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
               <input type="password" onChange={(e) => setPassword(e.target.value)}></input> <br />
               <button onClick={() => ValidLoginForm()}>Sign in</button>
           </pre>
+                {
+                    message=="niezalogowany"?(<div>
+                        Niepoprawne dane
+                    </div>):("")
+                }
             </div>
         </div>
     );
