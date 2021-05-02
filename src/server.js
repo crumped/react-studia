@@ -1,11 +1,24 @@
+
 const express = require('express');
-const bodyParser = require('body-parser')
-const path = require('path');
 
-var manager =require('./server/databaseManager');
 
-const app = express();
+var cors = require('cors');
 
+
+
+var users   = require('./server/routes/users'),
+    user    = require('./server/routes/user')
+/*
+    files   = require('./server/routes/files'),
+    notes   = require('./server/routes/notes')
+*/
+
+var app = express();
+
+app.use(cors({origin: 'http://localhost:3000/'}));
+
+
+/*
 
 var router = express.Router();
 app.get('/', function(req, res) {
@@ -21,6 +34,15 @@ app.get('/select_user', (req, res) => {
 
 app.get('/ping', (req, res) => {
     return res.send('pong');
-})
+})*/
+app.use(express.json());
 
-app.listen(process.env.PORT || 8081);
+app.use('/users',  users);
+
+app.use('/user',  user);
+/*
+app.use('/files',  file);
+app.use('/notes', note);
+*/
+
+app.listen(process.env.PORT || 8083);

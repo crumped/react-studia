@@ -16,7 +16,8 @@ import Logout from "./views/logout/Logout";
 const App = () => {
     //set cookie
 
-    var db = Select("user", "*", "")
+
+
     const [loggedIn, setLoggedIn] = useState(false)
 
 

@@ -9,12 +9,45 @@ interface LoginProps{
 }
 const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const history = useHistory();
-    const [logIn, setLogIn] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const ValidLoginForm = () => {
-        SetCookieFunction(logIn);
-        setLoggedIn(true);
-        history.push("/");
+        console.log(username+" "+password);
+        fetch("http://localhost:8083/user/", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({login: username, password: password}) // body data type must match "Content-Type" header
+        })
+            .then((response) => {
+                if(!response.ok){
+                    throw new Error(response.status.toString());
+                }
+                else{
+                    return response.json();
+                }
+            })
+            .then((papa) => {
+                if(papa.length == 1)
+                {
+                    console.log(papa);
+                    SetCookieFunction(username);
+                    setLoggedIn(true);
+                    history.push("/");
+                }
+                else
+                {
+                    throw new Error("Nie zalogowano, uzytkownik nie istnieje");
+                }
+            })
+
     };
+
 
     return (
         <div>
@@ -25,7 +58,9 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
           <pre>
             <h2>Setting Cookie in ReactJS</h2>
             <span>Enter User Name: </span>
-              <input type="text" onChange={(e) => setLogIn(e.target.value)}></input> <br />
+              <input type="text" onChange={(e) => setUsername(e.target.value)}></input> <br />
+              <span>Enter Password: </span>
+              <input type="password" onChange={(e) => setPassword(e.target.value)}></input> <br />
               <button onClick={() => ValidLoginForm()}>Sign in</button>
           </pre>
             </div>
