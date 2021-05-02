@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
 import { Switch, Route, BrowserRouter} from "react-router-dom";
 
-import Main from './views/main/index';
-import Login from './views/login/index';
-import SignUp from './views/signup/index';
-import Page404 from './views/page404/index';
+import Layout from "./components/Layout";
+import Main from './views/main/Main';
+import Login from './views/login/Login';
+import SignUp from './views/signup/Signup';
+import Page404 from './views/page404/page404';
 import {GetCookieFunction} from "./functions/Cookies";
 import {Select} from "./server/databaseManager"
 
 import './App.css';
+import Logout from "./views/logout/Logout";
 
 
 const App = () => {
     //set cookie
-    //TODO make as global function.
 
     var db = Select("user", "*", "")
     const [loggedIn, setLoggedIn] = useState(false)
@@ -34,26 +35,27 @@ const App = () => {
     React.useEffect(() => CheckIfLoggedIn(), [CheckIfLoggedIn])
 
   return (
-
-    <div className="App">
-        {loggedIn ? (
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/" component={Main} exact />
-                    <Route path="*" component={Page404} />
-                </Switch>
-            </BrowserRouter>
-        ) : (
-            <BrowserRouter>
-                <Switch>
-                    <Route path="/login" component={Login} />
-                    <Route path="/signup" component={SignUp} />
-                    <Route path="*" component={Page404} />
-                </Switch>
-            </BrowserRouter>
-        )
-        }
-    </div>
+      <Layout isLoggedIn={loggedIn}>
+          <div>Test</div>
+          {loggedIn ? (
+              <BrowserRouter>
+                  <Switch>
+                      <Route path="/" component={Main} exact />
+                      <Route path="/logout" component={Logout}  />
+                      <Route path="*" component={Page404} />
+                  </Switch>
+              </BrowserRouter>
+          ) : (
+              <BrowserRouter>
+                  <Switch>
+                      <Route path="/login" component={() => <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
+                      <Route path="/signup" component={SignUp} />
+                      <Route path="*" component={Page404} />
+                  </Switch>
+              </BrowserRouter>
+          )
+          }
+      </Layout>
   );
 }
 

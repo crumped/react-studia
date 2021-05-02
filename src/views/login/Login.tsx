@@ -3,11 +3,16 @@ import {useHistory} from "react-router";
 
 import {SetCookieFunction} from "../../functions/Cookies";
 
-const Login = () => {
+interface LoginProps{
+    loggedIn: boolean;
+    setLoggedIn: (status: boolean) => void;
+}
+const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const history = useHistory();
     const [logIn, setLogIn] = useState('')
     const ValidLoginForm = () => {
         SetCookieFunction(logIn);
+        setLoggedIn(true);
         history.push("/");
     };
 
