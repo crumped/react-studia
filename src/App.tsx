@@ -37,7 +37,6 @@ const App = () => {
 
   return (
       <Layout isLoggedIn={loggedIn}>
-          <div>Test</div>
           {loggedIn ? (
               <BrowserRouter>
                   <Switch>

@@ -1,3 +1,4 @@
+import { makeStyles } from '@material-ui/core';
 import React, {useState} from 'react';
 import {useHistory} from "react-router";
 
@@ -7,7 +8,47 @@ interface LoginProps{
     loggedIn: boolean;
     setLoggedIn: (status: boolean) => void;
 }
+const useStyles = makeStyles({
+    Wrapper: {
+        display: 'flex',
+        justifyContent:'center',
+        width: "90%",
+        minHeight: "100%",
+        padding: "20px",
+    },
+    FormContent: {
+        justifyContent: 'center',
+        borderRadius:"10px 10px 10px 10px",
+        background: "#fff",
+        padding: "30px",
+        width: "80%",
+        maxWidth: "450px",
+        position: "absolute",
+        boxShadow: "0 30px 60px 0 rgba(0, 0, 0, 0.3)",
+        textAlign:"center"
+    },
+    Input:{
+        backgroundColor: '#f6f6f6',
+        color: '#0d0d0d',
+        border: 'None',
+        borderRadius: "5px 5px 5px 5px",
+        margin: '0.5em',
+        padding: "1em 2em",
+        textAlign: "center",
+        fontSize: '0.5',
+    },
+    Button:{
+        color:"#fff",
+        backgroundColor: "rgba(92,168,214,0.9)",
+        borderRadius: "0.5em 0.5em 0.5em 0.5em",
+        border:'None',
+        textAlign:'center',
+        padding:"1.5em 8em",
+        margin:"0.5em",
+    }
+})
 const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
+    const classes = useStyles();
     const history = useHistory();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -52,19 +93,16 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     };
 
 
+
     return (
-        <div>
-            Login xd
-            <div style={{
-                marginLeft: '200px',
-            }}>
+        <div className = {classes.Wrapper}>
+            <div className = {classes.FormContent}>
+                Login xd
           <pre>
-            <h2>Setting Cookie in ReactJS</h2>
-            <span>Enter User Name: </span>
-              <input type="text" onChange={(e) => setUsername(e.target.value)}></input> <br />
-              <span>Enter Password: </span>
-              <input type="password" onChange={(e) => setPassword(e.target.value)}></input> <br />
-              <button onClick={() => ValidLoginForm()}>Sign in</button>
+
+              <input className={classes.Input} type="text" onChange={(e) => setUsername(e.target.value)} placeholder={"login"}></input> <br />
+              <input className={classes.Input} type="password" onChange={(e) => setPassword(e.target.value)} placeholder={"password"}></input> <br />
+              <button className={classes.Button} onClick={() => ValidLoginForm()}>Sign in</button>
           </pre>
                 {
                     message=="niezalogowany"?(<div>
