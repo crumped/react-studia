@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
                 }
             })
             .then((papa) => {
-                if(papa.length == 1)
+                if(papa.length === 1)
                 {
                     console.log(papa);
                     SetCookieFunction(username);
@@ -67,7 +67,7 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
               <button onClick={() => ValidLoginForm()}>Sign in</button>
           </pre>
                 {
-                    message=="niezalogowany"?(<div>
+                    message === "niezalogowany"?(<div>
                         Niepoprawne dane
                     </div>):("")
                 }

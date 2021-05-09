@@ -1,7 +1,6 @@
 import React from 'react';
 import { Drawer, IconButton, Link } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core";
-import AddIcon from '@material-ui/icons/Add';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import NoteIcon from '@material-ui/icons/Note';
 import ShareIcon from '@material-ui/icons/Share';
@@ -25,7 +24,7 @@ const useStyles = makeStyles({
     },
     LinkText: {
         color: "rgba(53, 47, 158, 1)",
-        fontSize: "24px",     
+        fontSize: "24px",
     },
     Button: {
         "&:hover": {
@@ -43,16 +42,18 @@ const useStyles = makeStyles({
         fontWeight: 800,
     },
     SectionLogout: {
-        
+
     }
 })
 
 
 const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
+
     const classes = useStyles();
+
     return (
         <div>
-            <Drawer 
+            <Drawer
                 open={isOpen}
                 onClose={() => setIsOpen(false)}
             >
@@ -130,7 +131,3 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
     );
 }
 export default SidePanel;
-{/*Sekcje*/ }
-{/*1 Profil*/ }
-{/*2 Linki do stron */ }
-{/*3 logout */ }

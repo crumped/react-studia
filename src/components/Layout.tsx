@@ -10,6 +10,7 @@ interface AppBarProps{
 const useStyles = makeStyles({
     App: {
         width: "100%",
+        minHeight: "100vh",
     },
 })
 

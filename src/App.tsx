@@ -3,11 +3,11 @@ import { Switch, Route, BrowserRouter} from "react-router-dom";
 
 import Layout from "./components/Layout";
 import Main from './views/main/Main';
+import MainGuest from './views/main/MainGuest';
 import Login from './views/login/Login';
 import SignUp from './views/signup/Signup';
 import Page404 from './views/page404/page404';
 import {GetCookieFunction} from "./functions/Cookies";
-import {Select} from "./server/databaseManager"
 
 import './App.css';
 import Logout from "./views/logout/Logout";
@@ -37,7 +37,6 @@ const App = () => {
 
   return (
       <Layout isLoggedIn={loggedIn}>
-          <div>Test</div>
           {loggedIn ? (
               <BrowserRouter>
                   <Switch>
@@ -49,6 +48,7 @@ const App = () => {
           ) : (
               <BrowserRouter>
                   <Switch>
+                      <Route path="/" component={MainGuest} exact />
                       <Route path="/login" component={() => <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />} />
                       <Route path="/signup" component={SignUp} />
                       <Route path="*" component={Page404} />
