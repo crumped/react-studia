@@ -116,7 +116,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                         <h2 className={classes.SectionTitle}> Logout </h2>
                     <ul>{/*Logout*/}
                             <li className={classes.BlankList}>
-                                <Link href="/" className={classes.LinkText}>
+                                <Link href="/logout" className={classes.LinkText}>
                                     <IconButton className={classes.Button}>
                                         <MeetingRoomIcon className={classes.Icons} />
                                     </IconButton>

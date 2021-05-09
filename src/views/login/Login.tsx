@@ -55,7 +55,7 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const [message, setMessage] = useState("")
     const ValidLoginForm = () => {
         console.log(username+" "+password);
-        fetch("http://localhost:8083/user/", {
+        fetch("http://localhost:8080/user/", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

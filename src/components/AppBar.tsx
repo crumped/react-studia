@@ -78,15 +78,6 @@ const AppBar:React.FC<AppBarProps> = ({ isLoggedIn, isOpen, setIsOpen }) => {
                         >
                           <MenuIcon />
                         </IconButton>
-                        <Link
-                            color="inherit"
-                            variant="h5"
-                            underline="none"
-                            href="/logout"
-                            className={classes.navBarButton}
-                        >
-                            {'Logout'}
-                        </Link>
                     </span>
                 </div>
             ) : (
