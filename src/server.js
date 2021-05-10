@@ -18,23 +18,13 @@ var app = express();
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 
 
-/*
-
-var router = express.Router();
-app.get('/', function(req, res) {
-    res.json({ message: 'API - Servidor Listo...' });
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    next();
 });
-var blabla = function(req, res ){
-    var koko = manager.Select("user","*","");
-    return koko.json();
-}
-app.get('/select_user', (req, res) => {
-    manager.Select(req, res, "user","*","");
-})
 
-app.get('/ping', (req, res) => {
-    return res.send('pong');
-})*/
 app.use(express.json());
 
 app.use('/users',  users);

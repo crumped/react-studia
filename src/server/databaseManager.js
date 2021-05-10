@@ -7,6 +7,22 @@ let db = new sqlite3.Database('./Storage/database.db', sqlite3.OPEN_READWRITE, (
     console.log('Connected to the database.');
 });
 
+const db_query = async function (query) {
+    return new Promise(function (resolve, reject) {
+        db.all(query, (err, rows) => {
+            if (err) {
+                console.error(err.message);
+                console.log("Error in select");
+                reject("error");
+
+            }
+            console.log("inside select");
+            console.log(rows);
+            resolve(rows);
+        });
+    });
+};
+
 exports.Insert = function(req, res, table, values){
 
     let row = db.exec("INSERT INTO ? VALUES ? ", table,value, (err) => {
@@ -21,19 +37,8 @@ exports.Insert = function(req, res, table, values){
     });
 }
 
-exports.Select = function(req, res, table, select="*", where=""){
-
-    console.log(where);
-    var rows = db.all(`SELECT ${select} FROM ${table} WHERE ${where};`, (err,rows) => {
-        if (err) {
-                console.error(err.message);
-                console.log("Error in select");
-        }
-        console.log(rows);
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-        res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-        res.send(rows);
-    });
+exports.Select = async function(req, res, table, select="*", where=""){
+    let query = `SELECT ${select} FROM ${table} WHERE ${where};`;
+    return await db_query(query);
 }
 
