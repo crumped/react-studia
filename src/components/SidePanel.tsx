@@ -35,6 +35,7 @@ const useStyles = makeStyles({
     DrawerProperties: {
         minWidth: "300px",
         width: "15vw",
+        height: "100%",
     },
     SectionTitle: {
         padding: "10px",
@@ -42,7 +43,7 @@ const useStyles = makeStyles({
         fontWeight: 800,
     },
     SectionLogout: {
-
+        
     }
 })
 
