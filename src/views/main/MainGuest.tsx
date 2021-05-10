@@ -4,7 +4,10 @@ import background from '../../assets/images/notebook-mainguest-bg.jpg';
 
 const useStyles = makeStyles({
     Background:{
-        backgroundImage: `url(${background})`,
+        backgroundImage: `linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ), url(${background})`,
         backgroundRepeat: "repeat-y",
         backgroundSize: "cover",
         minHeight: "100vh",
@@ -17,10 +20,9 @@ const useStyles = makeStyles({
     },
 
     Text:{
-        mixBlendMode: "difference",
         color: "white",
         width: "60%",
-        margin: "20% auto auto 30%",
+        margin: "20% auto auto 20%",
     },
 
     TextLine: {
