@@ -1,21 +1,22 @@
-var express = require('express');
-var bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
 
-var router = express.Router();
+const router = express.Router();
 router.use(bodyParser.json());
-var manager =require('../databaseManager');
+const manager = require('../databaseManager');
 
 
 router.get('/:login/:password', function(req, res) {
-    var where="user_name="+req.params.login+" AND password="+req.params.password;
-    var koko = manager.Select(req, res, "user", "*", where);
+    const where = "user_name=" + req.params.login + " AND password=" + req.params.password;
+    const koko = manager.Select(req, res, "user", "*", where);
 });
 
-router.post('/', function(req, res) {
-    var where="user_name = '"+req.body.login+"' AND password = '"+req.body.password+"'";
-    console.log(req.body);
-    console.log(where);
-    var koko = manager.Select(req, res, "user", "*", where);
+router.post('/', async function(req, res) {
+    const where = "user_name = '" + req.body.login + "' AND password = '" + req.body.password + "'";
+
+    const rows = await manager.Select(req, res, "user", "*", where);
+
+    res.send(rows);
 });
 
 module.exports = router;
