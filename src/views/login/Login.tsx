@@ -8,7 +8,7 @@ interface LoginProps{
     loggedIn: boolean;
     setLoggedIn: (status: boolean) => void;
 }
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
     Wrapper: {
         display: 'flex',
         justifyContent:'center',
@@ -47,6 +47,7 @@ const useStyles = makeStyles({
         margin:"0.5em",
     }
 })
+
 const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const classes = useStyles();
     const history = useHistory();
@@ -54,7 +55,6 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState("")
     const ValidLoginForm = () => {
-        console.log(username+" "+password);
         fetch("http://localhost:8080/user/", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin

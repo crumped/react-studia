@@ -25,14 +25,15 @@ const db_query = async function (query) {
 
 exports.Insert = function(req, res, table, values){
 
-    let row = db.exec("INSERT INTO ? VALUES ? ", table,value, (err) => {
+    console.log("inside insert");
+    console.log("Insert into " +table+" values"+values);
+    let row = db.exec(`INSERT INTO ${table} VALUES${values};`, (err) => {
         if(err){
             console.error(err.message);
             console.log("Error in Insert statement");
         }
         else{
             console.log("Correct insert data");
-            res.send("Correct insert");
         }
     });
 }

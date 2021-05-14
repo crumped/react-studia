@@ -8,6 +8,7 @@ const Logout = () => {
     //delete cookies
     //change status to logged out
     RemoveCookieFunction();
+
     return <Redirect to="/login" push={true}/>;
 };
 
