@@ -30,17 +30,10 @@ router.post('/register', async function(req, res) {
     }
     else
     {
-        if(req.body.password !== req.body.confirm_password)
-        {
-            res.send('nieidentyczne');
-        }
-        else
-        {
-            const values ="('"+req.body.login+"', '"+req.body.password+"', '"+req.body.first_name+"', '"+req.body.last_name+"')";
-            const table ="user(user_name, password, first_name, last_name)"
-            const query = manager.Insert(req, res, table, values);
-            res.send(rows);
-        }
+        const values ="('"+req.body.login+"', '"+req.body.password+"', '"+req.body.first_name+"', '"+req.body.last_name+"')";
+        const table ="user(user_name, password, first_name, last_name)"
+        const query = manager.Insert(req, res, table, values);
+        res.send(rows);
     }
 });
 

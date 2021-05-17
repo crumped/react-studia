@@ -45,6 +45,11 @@ export const useStyles = makeStyles({
         textAlign:'center',
         padding:"1.5em 8em",
         margin:"0.5em",
+    },
+    ValidationDiv:{
+        color:"red",
+        display:"none",
+        margin:"0",
     }
 })
 
