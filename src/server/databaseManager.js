@@ -43,3 +43,24 @@ exports.Select = async function(req, res, table, select="*", where=""){
     return await db_query(query);
 }
 
+
+exports.Update = function(table, values, where="", order="", limit=""){
+    if(order !== ""){
+        order = "order by" + order;
+    }
+
+    if(limit !== ""){
+        limit = "limit " + limit;
+    }
+
+    console.log("update");
+    let row = db.exec(`UPDATE ${table} SET ${values} WHERE ${where} ${order} ${limit} ;`, (err) => {
+        if(err){
+            console.error(err.message);
+            console.log("Error in Update statement");
+        }
+        else{
+            console.log("Updated data");
+        }
+    });
+}
