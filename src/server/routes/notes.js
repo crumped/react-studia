@@ -14,11 +14,11 @@ router.post('/share', async function(req, res) {
 });
 
 router.post('/undo-share', async function(req, res) {
-    const where = "user_name = '" + req.body.login + "' AND password = '" + req.body.password + "'";
+    const where = "user_id = '" + req.body.userId+ "' AND files_id = '" + req.body.fileId + "'";
 
-    const rows = await manager.Select(req, res, "user", "*", where);
+    await manager.Update("user_files", "active=0", where);
 
-    res.send(rows);
+    res.send({message: "updated"});
 });
 
 router.post('/list', async function(req, res) {
@@ -37,15 +37,11 @@ router.post('/list', async function(req, res) {
             let sharedToMeIds = [];
             for(let i = 0; i < notes.length; i++){
                 if(notes[i]["owner"] === 1){
-                    console.log(notes[i]["owner"]);
                     myNotesIds.push(notes[i]["files_id"]);
                 } else {
                     sharedToMeIds.push(notes[i]["files_id"]);
                 }
             }
-
-            console.log(myNotesIds);
-            console.log(sharedToMeIds);
 
             let whereMyNotes = "";
             for(let i = 0; i < myNotesIds.length; i++){
@@ -62,7 +58,6 @@ router.post('/list', async function(req, res) {
 
             for(let i = 0; i < myNotes.length; i++){
                 const sharedToNotes = await manager.Select(req, res, "user_files left join user on user_files.user_id = user.id_user", "*", 'files_id=' + myNotes[i]["id_files"] +' and owner=0 and active=1');
-                console.log(sharedToNotes);
                 myNotes[i]["shared"] = sharedToNotes;
             }
 

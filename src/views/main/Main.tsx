@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {makeStyles} from "@material-ui/core";
+import {IconButton, makeStyles} from "@material-ui/core";
 
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 import {GetCookieFunction} from "../../functions/Cookies";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -182,6 +183,28 @@ const Main = () => {
 
     };
 
+    const UndoShareForUser = (userId: number, fileID: number) => {
+        fetch("http://localhost:8080/notes/undo-share", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({userId: userId, fileId: fileID}) // body data type must match "Content-Type" header
+        })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("nope");
+                    return [];
+                }
+                else{
+                    GetList();
+                }
+            })
+
+    };
+
     function handleChange(event: any, newValue: any) {
         setValue(newValue);
     }
@@ -214,7 +237,11 @@ const Main = () => {
                             <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
                                 <ul>
                                     {item["shared"].map(function(item2: Shared, index2: number){
-                                        return <li className={classes.Li}>{item2["first_name"]} {item2["last_name"]}</li>
+                                        return <li className={classes.Li}>{item2["first_name"]} {item2["last_name"]}
+                                            <IconButton onClick={() => UndoShareForUser(item2["user_id"], item2["files_id"])}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </li>
                                     })}
                                 </ul>
                             </div>
