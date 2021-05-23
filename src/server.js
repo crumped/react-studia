@@ -7,7 +7,8 @@ var cors = require('cors');
 
 
 var users   = require('./server/routes/users'),
-    user    = require('./server/routes/user')
+    user    = require('./server/routes/user'),
+    notes   = require('./server/routes/notes')
 /*
     files   = require('./server/routes/files'),
     notes   = require('./server/routes/notes')
@@ -30,6 +31,9 @@ app.use(express.json());
 app.use('/users',  users);
 
 app.use('/user',  user);
+
+app.use('/notes',  notes);
+
 /*
 app.use('/files',  file);
 app.use('/notes', note);

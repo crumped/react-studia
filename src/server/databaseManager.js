@@ -16,8 +16,7 @@ const db_query = async function (query) {
                 reject("error");
 
             }
-            console.log("inside select");
-            console.log(rows);
+
             resolve(rows);
         });
     });
@@ -40,6 +39,7 @@ exports.Insert = function(req, res, table, values){
 
 exports.Select = async function(req, res, table, select="*", where=""){
     let query = `SELECT ${select} FROM ${table} WHERE ${where};`;
+    console.log(query);
     return await db_query(query);
 }
 

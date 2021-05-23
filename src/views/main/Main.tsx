@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {makeStyles} from "@material-ui/core";
-import background from '../../assets/images/notebook-mainguest-bg.jpg';
 
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
@@ -9,6 +8,8 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+
+import {GetCookieFunction} from "../../functions/Cookies";
 
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -75,6 +76,10 @@ const useStyles = makeStyles({
         overflow: "hidden",
         overflowY: "scroll",
         borderLeft: "1px solid",
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": {
+            display: "none"
+        }
     },
     Li: {
         listStyleType: "none",
@@ -86,10 +91,15 @@ const useStyles = makeStyles({
     },
     Desc: {
         width: "100%",
-        padding: "3% 0",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         textShadow: "1px 1px 3px rgb(0 0 0 / 25%)",
         color: "white",
+        overflowY: "scroll",
+        height: "100%",
+        scrollbarWidth: "none",
+        "&::-webkit-scrollbar": {
+            display: "none"
+        }
     },
     Bookmark: {
         float: "left",
@@ -106,17 +116,78 @@ const useStyles = makeStyles({
     },
     Root: {
         flexGrow: 1,
-        width: "100%", 
+        width: "100%",
     }
 })
+
+export interface Shared {
+    id_user_files: number;
+    files_id: number;
+    user_id: number;
+    active: number;
+    owner: number;
+    id_user: number;
+    user_name: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface MyNote {
+    id_files: number;
+    content: string;
+    active: number;
+    shared: Shared[];
+}
 
 const Main = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [myNotes, setMyNotes] = React.useState<MyNote[]>([]);
+    const [sharedNotes, setSharedNotes] = React.useState([]);
+
+    const GetList = () => {
+        fetch("http://localhost:8080/notes/list", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({user: GetCookieFunction(),}) // body data type must match "Content-Type" header
+        })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("nope");
+                    return [];
+                }
+                else{
+                    return response.json();
+                }
+            })
+            .then((res) => {
+                if("myNotes" in res)
+                {
+                    setMyNotes(res["myNotes"]);
+                }
+
+                if("theirNotes" in res)
+                {
+                    setSharedNotes(res["theirNotes"]);
+                }
+
+            })
+
+    };
 
     function handleChange(event: any, newValue: any) {
         setValue(newValue);
     }
+
+    React.useEffect(() => GetList(), [])
+
     return (
         <div className={classes.Container}>
             <div className={classes.Root}>
@@ -131,471 +202,34 @@ const Main = () => {
                         aria-label="scrollable auto tabs example"
                     >
                         <Tab label="Moje notatki" {...a11yProps(0)} />
-                        <Tab label="Udostepnione notatki" {...a11yProps(1)} />                   
+                        <Tab label="Udostepnione notatki" {...a11yProps(1)} />
                     </Tabs>
                 </AppBar>
                 <TabPanel value={value} index={0}>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
+                    {myNotes.map(function(item, index){
+                        return <div className={classes.Card}>
+                            <div className={classes.HalfBox1}>
+                                <div className={classes.Desc}>{item["content"]}</div>
+                            </div>
+                            <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
+                                <ul>
+                                    {item["shared"].map(function(item2: Shared, index2: number){
+                                        return <li className={classes.Li}>{item2["first_name"]} {item2["last_name"]}</li>
+                                    })}
+                                </ul>
+                            </div>
                         </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
+                    })}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
+                    {sharedNotes.map(function(item, index){
+                        return <div className={classes.Card}>
+                            <div className={classes.Desc}>{item["content"]}</div>
                         </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className={classes.Card}>
-                        <div className={classes.HalfBox1}>
-                            <img className={classes.Img} src={background} alt="preview" />
-                            <div className={classes.Desc}>Notatki z nowej</div>
-                        </div>
-                        <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
-                            <ul>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                                <li className={classes.Li}>Result</li>
-                            </ul>
-                        </div>
-                    </div>
+                    })}
                 </TabPanel>
             </div>
-            
+
         </div>
     );
 };
