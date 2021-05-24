@@ -6,9 +6,10 @@ router.use(bodyParser.json());
 const manager = require('../databaseManager');
 
 router.post('/share', async function(req, res) {
+    // dodaj użytkownika do list udostępnionych plikóœ
     const where = "user_name = '" + req.body.login + "' AND password = '" + req.body.password + "'";
 
-    const rows = await manager.Select(req, res, "user", "*", where);
+    const rows = await manager.Select("user", "*", where);
 
     res.send(rows);
 });
@@ -25,12 +26,12 @@ router.post('/list', async function(req, res) {
     const where = "user_name = '" + req.body.user + "'";
 
 
-    const user_id = await manager.Select(req, res, "user", "id_user", where +'');
+    const user_id = await manager.Select("user", "id_user", where +'');
 
 
     if(user_id.length !== 0){
         const where = "user_id = '" + user_id[0]["id_user"] + "'";
-        const notes = await manager.Select(req, res, "user_files", "*", where +'');
+        const notes = await manager.Select("user_files", "*", where +'');
 
         if(notes.length !== 0){
             let myNotesIds = [];
@@ -53,11 +54,11 @@ router.post('/list', async function(req, res) {
 
             let myNotes = [];
             if(whereMyNotes !== ""){
-                myNotes = await manager.Select(req, res, "files", "*", whereMyNotes +'');
+                myNotes = await manager.Select("files", "*", whereMyNotes +'');
             }
 
             for(let i = 0; i < myNotes.length; i++){
-                const sharedToNotes = await manager.Select(req, res, "user_files left join user on user_files.user_id = user.id_user", "*", 'files_id=' + myNotes[i]["id_files"] +' and owner=0 and active=1');
+                const sharedToNotes = await manager.Select("user_files left join user on user_files.user_id = user.id_user", "*", 'files_id=' + myNotes[i]["id_files"] +' and owner=0 and active=1');
                 myNotes[i]["shared"] = sharedToNotes;
             }
 
@@ -71,7 +72,7 @@ router.post('/list', async function(req, res) {
 
             let sharedNotes = [];
             if(whereSharedToMe !== ""){
-                sharedNotes = await manager.Select(req, res, "files", "*", whereSharedToMe +'');
+                sharedNotes = await manager.Select("files", "*", whereSharedToMe +'');
             }
 
 

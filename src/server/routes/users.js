@@ -1,18 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser')
+const express = require('express');
 
-var router = express.Router();
-var manager =require('../databaseManager');
+const router = express.Router();
+const manager = require('../databaseManager');
 
 router.get('/', function(req, res) {
 
-    var koko = manager.Select(req, res, "user", "*", "");
+    let rows = manager.Select("user", "*", "");
+    res.send(rows);
 
-});
-
-router.post('/', function(req, res) {
-    var koko = manager.Select(req, res, "*", "user", "");
-    return koko.json();
 });
 
 module.exports = router;

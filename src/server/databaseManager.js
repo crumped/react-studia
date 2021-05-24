@@ -22,11 +22,11 @@ const db_query = async function (query) {
     });
 };
 
-exports.Insert = function(req, res, table, values){
+exports.Insert = function(table, values){
 
     console.log("inside insert");
     console.log("Insert into " +table+" values"+values);
-    let row = db.exec(`INSERT INTO ${table} VALUES${values};`, (err) => {
+    db.exec(`INSERT INTO ${table} VALUES${values};`, (err) => {
         if(err){
             console.error(err.message);
             console.log("Error in Insert statement");
@@ -37,16 +37,22 @@ exports.Insert = function(req, res, table, values){
     });
 }
 
-exports.Select = async function(req, res, table, select="*", where=""){
-    let query = `SELECT ${select} FROM ${table} WHERE ${where};`;
+exports.Select = async function(table, select="*", where=""){
+    if(where !== ""){
+        where = "WHERE " + where;
+    }
+    let query = `SELECT ${select} FROM ${table} ${where};`;
+    console.log(query);
     return await db_query(query);
 }
 
 
 exports.Update = function(table, values, where=""){
-
+    if(where !== ""){
+        where = "WHERE " + where;
+    }
     console.log("update");
-    let query = `UPDATE ${table} SET ${values} WHERE ${where};`;
+    let query = `UPDATE ${table} SET ${values} ${where};`;
     console.log(query);
     db.exec(query, (err) => {
         if(err){
