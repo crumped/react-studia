@@ -7,11 +7,23 @@ const manager = require('../databaseManager');
 
 router.post('/share', async function(req, res) {
     // dodaj użytkownika do list udostępnionych plikóœ
-    const where = "user_name = '" + req.body.login + "' AND password = '" + req.body.password + "'";
+    // sprawdz czy juz dodany
+    // jezeli nie to dodaj
+    const where = "user_id = '" + req.body.userId + "' AND files_id = '" + req.body.fileId + "'";
 
-    const rows = await manager.Select("user", "*", where);
+    const rows = await manager.Select("user_files", "*", where);
 
-    res.send(rows);
+    if(rows.length !== 0)
+    {
+        res.send('istnieje');
+    }
+    else
+    {
+        const values ="('"+req.body.userId+"', '"+req.body.fileId+"', '1', '0')";
+        const table ="user_files(user_id, files_id, active, owner)"
+        manager.Insert(table, values);
+        res.send('dodane');
+    }
 });
 
 router.post('/undo-share', async function(req, res) {
