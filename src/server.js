@@ -2,19 +2,18 @@
 const express = require('express');
 
 
-var cors = require('cors');
+const cors = require('cors');
 
 
 
-var users   = require('./server/routes/users'),
-    user    = require('./server/routes/user'),
-    notes   = require('./server/routes/notes')
-/*
-    files   = require('./server/routes/files'),
-    notes   = require('./server/routes/notes')
-*/
+const users   = require('./server/routes/users'),
+      user    = require('./server/routes/user'),
+      notes   = require('./server/routes/notes'),
+      note    = require('./server/routes/note')
 
-var app = express();
+
+
+const app = express();
 
 app.use(cors({origin: 'http://localhost:3000', credentials: true}));
 
@@ -34,9 +33,7 @@ app.use('/user',  user);
 
 app.use('/notes',  notes);
 
-/*
-app.use('/files',  file);
-app.use('/notes', note);
-*/
+app.use('/note', note);
+
 
 app.listen(process.env.PORT || 8080);

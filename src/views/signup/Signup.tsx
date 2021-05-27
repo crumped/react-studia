@@ -87,7 +87,6 @@ const SignUp = () => {
         CheckPassword();
 
         if(getData) {
-            console.log("jeste tu");
             fetch("http://localhost:8080/user/register/", {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin

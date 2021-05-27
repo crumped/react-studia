@@ -20,6 +20,7 @@
     "@types/react-router-dom": "^5.1.5",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "draft-convert": "^2.1.11",
     "draft-js": "^0.11.7",
     "express": "^4.17.1",
     "react": "^17.0.2",
@@ -61,7 +62,7 @@
     ]
   },
   "devDependencies": {
-    "@types/draft-js": "^0.11.3",
+    "@types/draft-convert": "^2.1.2",
     "@types/react-draft-wysiwyg": "^1.13.2"
   }
 }
