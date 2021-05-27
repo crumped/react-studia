@@ -9,7 +9,7 @@ router.post('/share', async function(req, res) {
     // dodaj użytkownika do list udostępnionych plikóœ
     // sprawdz czy juz dodany
     // jezeli nie to dodaj
-    const where = "user_id = '" + req.body.userId + "' AND files_id = '" + req.body.fileId + "' and (owner=0)";
+    const where = "user_id = '" + req.body.userId + "' AND files_id = '" + req.body.fileId + "' and (owner=1 or active=1)";
 
     const rows = await manager.Select("user_files", "*", where);
 
