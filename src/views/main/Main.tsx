@@ -6,36 +6,13 @@ import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 
 import {GetCookieFunction} from "../../functions/Cookies";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-function TabPanel(props: any) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`scrollable-auto-tabpanel-${index}`}
-            aria-labelledby={`scrollable-auto-tab-${index}`}
-            {...other}
-        >
-            <Box p={3}>{children}</Box>
-        </Typography>
-    );
-}
-
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired
-};
+import TabPanel from "../../components/TabPanel";
 
 function a11yProps(index: any) {
     return {
@@ -43,8 +20,6 @@ function a11yProps(index: any) {
         "aria-controls": `scrollable-auto-tabpanel-${index}`
     };
 }
-
-
 
 const useStyles = makeStyles({
     Card: {
@@ -145,6 +120,14 @@ export interface MyNote {
     active: number;
     shared: Shared[];
 }
+
+export interface TabPanelProps {
+    value: any;
+    index: number;
+    children: any;
+}
+
+
 
 const Main = () => {
     const classes = useStyles();
