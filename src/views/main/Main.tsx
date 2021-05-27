@@ -128,7 +128,6 @@ export interface TabPanelProps {
 }
 
 
-
 const Main = () => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -191,7 +190,6 @@ const Main = () => {
                     GetList();
                 }
             })
-
     };
 
 
@@ -312,7 +310,6 @@ const Main = () => {
                     })}
                 </TabPanel>
             </div>
-
         </div>
     );
 };
