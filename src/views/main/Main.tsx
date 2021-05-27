@@ -269,7 +269,7 @@ const Main = () => {
     const onSelectTag = (e: any, value: any, user: any) => {
         console.log(value);
         if(user != null && value !== null){
-            ShareForUser(user["id_files"], value["id_user"]);
+            ShareForUser(value["id_user"], user["id_files"]);
         }
 
     }
