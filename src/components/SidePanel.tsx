@@ -59,7 +59,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                 onClose={() => setIsOpen(false)}
             >
                 <div className={classes.DrawerProperties}>
-                    <h2 className={classes.SectionTitle}> Your Profile </h2>
+                    <h2 className={classes.SectionTitle}> Profil </h2>
                     <ul>{/*Profil*/}
                         <li className={classes.BlankList}>
                             <Link href="/" className={classes.LinkText}>
@@ -70,7 +70,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                             </Link>
                         </li>
                     </ul>
-                    <h2 className={classes.SectionTitle}> Pages </h2>
+                    <h2 className={classes.SectionTitle}> Strony </h2>
                     <ul>{/*Linki do stron*/}
                         <li className={classes.BlankList}>
                             <Link href="/" className={classes.LinkText}>
@@ -106,7 +106,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                         </li>
                     </ul>
                     <div className={classes.SectionLogout}>
-                        <h2 className={classes.SectionTitle}> Logout </h2>
+                        <h2 className={classes.SectionTitle}> Sesja </h2>
                     <ul>{/*Logout*/}
                             <li className={classes.BlankList}>
                                 <Link href="/logout" className={classes.LinkText}>
