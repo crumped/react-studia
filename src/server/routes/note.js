@@ -18,7 +18,7 @@ router.post('/add', async function(req, res){
         console.log(note);
         let values = "('"+title+"','"+note+"','1')";
         let table ="files(title,content,active)";
-        manager.Insert(table, values);
+        let resp = await manager.Insert(table, values);
         const filesCount = await manager.Select('files');
         //console.log(filesCount);
         console.log(user_id)
@@ -27,7 +27,7 @@ router.post('/add', async function(req, res){
             values ="('"+filesCount.length+"','"+user_id[0]['id_user']+"','1','1')";
             table = "user_files(files_id,user_id,active,owner)";
             await manager.Insert(table, values);
-            res.send("ok");
+            res.send({"fileId": resp});
         } else {
             res.send("error");
         }

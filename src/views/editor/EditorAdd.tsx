@@ -5,6 +5,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { makeStyles } from '@material-ui/core';
 import {GetCookieFunction} from "../../functions/Cookies";
 import {convertToHTML} from 'draft-convert'
+import {Redirect} from "react-router";
 
 const useStyles = makeStyles({
     WrapperClass: {
@@ -35,7 +36,20 @@ const AddNote = (content:any, title: string) =>
 
         body: JSON.stringify({title: title, notes:JSON.stringify(convertToRaw(content.getCurrentContent())), user:GetCookieFunction()})// body data type must match "Content-Type" header
     })
-
+        .then((response) => {
+            if(!response.ok){
+                console.log("nope");
+                return [];
+            }
+            else{
+                return response.json();
+            }
+        })
+        .then((res) => {
+            if("fileId" in res){
+                window.location.href = "/note/edit/" + res["fileId"];
+            }
+        })
 }
 const EditorAdd = () => {
     const classes = useStyles();
@@ -46,13 +60,6 @@ const EditorAdd = () => {
     return (
         <div className="App">
             <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder={"Tytuł"}></input><br/>
-            <Editor
-                defaultEditorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName={classes.WrapperClass}
-                editorClassName={classes.EditorClass}
-                toolbarClassName={classes.ToolbarClass}
-            />
             <button onClick={() => AddNote(editorState, title)}>Send</button>
         </div>
     )

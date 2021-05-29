@@ -19,7 +19,7 @@ router.post('/share', async function(req, res) {
     {
         const values ="('"+req.body.userId+"', '"+req.body.fileId+"', '1', '0')";
         const table ="user_files(user_id, files_id, active, owner)"
-        manager.Insert(table, values);
+        await manager.Insert(table, values);
         res.send('dodane');
     }
 });

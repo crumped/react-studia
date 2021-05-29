@@ -26,7 +26,7 @@ router.post('/register', async function(req, res) {
     {
         const values ="('"+req.body.login+"', '"+req.body.password+"', '"+req.body.first_name+"', '"+req.body.last_name+"')";
         const table ="user(user_name, password, first_name, last_name)"
-        manager.Insert(table, values);
+        await manager.Insert(table, values);
         res.send(rows);
     }
 });
