@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {IconButton, makeStyles} from "@material-ui/core";
+import {IconButton, Link, makeStyles} from "@material-ui/core";
 
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,12 +8,13 @@ import Tab from "@material-ui/core/Tab";
 
 import {GetCookieFunction} from "../../functions/Cookies";
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 import TabPanel from "../../components/TabPanel";
 import {Editor} from "react-draft-wysiwyg";
-import {ContentState, convertFromRaw, convertToRaw, EditorState} from "draft-js";
+import {convertFromRaw, EditorState} from "draft-js";
 
 function a11yProps(index: any) {
     return {
@@ -74,7 +75,7 @@ const useStyles = makeStyles({
         textShadow: "1px 1px 3px rgb(0 0 0 / 25%)",
         color: "white",
         overflowY: "scroll",
-        height: "75%",
+        height: "50%",
         marginBottom: "5px",
         borderRadius: "25px 0 0 0",
         paddingTop: "10px",
@@ -102,6 +103,11 @@ const useStyles = makeStyles({
     },
     ToolbarClass: {
         display: "none",
+    },
+    OwnerDesc: {
+        textAlign: "left",
+        color: "black",
+        margin: "30px 10px",
     }
 })
 
@@ -299,10 +305,18 @@ const Main = () => {
                                         options={listOfUsers}
                                         getOptionLabel={(option) => `${option["first_name"]} ${option["first_name"]}`}
                                         onChange={(event, value, reason, details) => onSelectTag(event, value, item)}
-                                        // style={{ width: 300 }}
                                         renderInput={(params) => <TextField {...params} label="Dodaj osobę" variant="outlined" />}
                                     />
                                 </div>
+                                <Link href={"/note/edit/"+item["id_files"]}>
+                                    <IconButton>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Link>
+                                {/* dodaj funkcję usuwania pliku */}
+                                <IconButton onClick={() => null}>
+                                    <DeleteIcon />
+                                </IconButton>
                             </div>
                             <div className={`${classes.HalfBox2} ${classes.ListOfUsers}`}>
                                 <ul>
@@ -320,9 +334,16 @@ const Main = () => {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     {sharedNotes.map(function(item, index){
-                        return <div className={classes.Card}>
-                            <div className={classes.Desc}>{item["content"]}</div>
-                        </div>
+                        return <Link href={"/preview/"+item["id_files"]}>
+                            <div className={classes.Card}>
+                                <div className={classes.Desc}>{item["content"]}</div>
+                                <div className={classes.OwnerDesc}>
+                                    <div>Właściciel pliku:</div>
+                                    <div>Imię: {item["first_name"]}</div>
+                                    <div>Nazwisko: {item["last_name"]}</div>
+                                </div>
+                            </div>
+                        </Link>
                     })}
                 </TabPanel>
             </div>
