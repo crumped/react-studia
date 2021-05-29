@@ -30,4 +30,31 @@ router.post('/add', async function(req, res){
     }
 })
 
+router.post('/', async function(req, res) {
+    const username = req.body.user;
+    const fileId = req.body.fileId;
+    const whereUser = "user_name = '" + username + "'";
+
+    const user_id = await manager.Select("user", "id_user", whereUser +'');
+
+    if(user_id.length !== 0){
+        const whereFilesBelong = "user_id = '" + user_id[0]['id_user'] + "' AND files_id = '" + fileId + "'";
+
+        const fileBelongTo = await manager.Select("user_files", "*", whereFilesBelong);
+
+        if(fileBelongTo.length !== 0){
+            const whereFiles = "id_files = '" + fileId + "'";
+            const rows = await manager.Select("files", "*", whereFiles);
+            res.send(rows);
+        } else {
+            res.send([]);
+        }
+    } else {
+        res.send([]);
+    }
+
+
+    // res.send(rows);
+});
+
 module.exports = router;

@@ -7,7 +7,8 @@ import MainGuest from './views/main/MainGuest';
 import Login from './views/login/Login';
 import SignUp from './views/signup/Signup';
 import Page404 from './views/page404/page404';
-import Edit from './views/editor/Editor';
+import EditorAdd from './views/editor/EditorAdd';
+import EditorEdit from './views/editor/EditorEdit';
 import SharedNote from './views/sharednote/SharedNote';
 import {GetCookieFunction} from "./functions/Cookies";
 
@@ -44,8 +45,10 @@ const App = () => {
                   <Switch>
                       <Route path="/" component={Main} exact />
                       <Route path="/logout" component={Logout} />
-                      <Route path="/editor" component={Edit} />
-                      <Route path="/sharedNote" component={SharedNote} />
+                      <Route path="/editor" component={EditorAdd} />
+                      <Route path="/note/add" component={EditorAdd} />
+                      <Route path="/note/edit/:fileId" component={EditorEdit} />
+                      <Route path="/preview/:fileId" component={SharedNote} />
                       <Route path="*" component={Page404} />
                   </Switch>
               </BrowserRouter>

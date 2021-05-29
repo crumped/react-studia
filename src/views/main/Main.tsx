@@ -1,8 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {IconButton, makeStyles} from "@material-ui/core";
 
-import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -13,6 +12,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
 import TabPanel from "../../components/TabPanel";
+import {Editor} from "react-draft-wysiwyg";
+import {ContentState, convertFromRaw, convertToRaw, EditorState} from "draft-js";
 
 function a11yProps(index: any) {
     return {
@@ -98,6 +99,9 @@ const useStyles = makeStyles({
     Root: {
         flexGrow: 1,
         width: "100%",
+    },
+    ToolbarClass: {
+        display: "none",
     }
 })
 
@@ -159,6 +163,8 @@ const Main = () => {
             .then((res) => {
                 if("myNotes" in res)
                 {
+                    const setOk = JSON.parse(res["myNotes"][0]["content"])
+                    setEditorState(EditorState.createWithContent(convertFromRaw(setOk)));
                     setMyNotes(res["myNotes"]);
                 }
 
@@ -255,6 +261,10 @@ const Main = () => {
 
     }
 
+    const [editorState, setEditorState] = useState(
+        () => EditorState.createEmpty(),
+    );
+
     return (
         <div className={classes.Container}>
             <div className={classes.Root}>
@@ -276,7 +286,13 @@ const Main = () => {
                     {myNotes.map(function(item, index){
                         return <div className={classes.Card}>
                             <div className={classes.HalfBox1}>
-                                <div className={classes.Desc}>{item["content"]}</div>
+                                <div className={classes.Desc}>
+                                    <Editor
+                                        defaultEditorState={editorState}
+                                        onEditorStateChange={setEditorState}
+                                        toolbarClassName={classes.ToolbarClass}
+                                    />
+                                </div>
                                 <div>
                                     <Autocomplete
                                         id="combo-box-demo"
