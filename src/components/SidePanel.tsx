@@ -43,7 +43,7 @@ const useStyles = makeStyles({
         fontWeight: 800,
     },
     SectionLogout: {
-        
+
     }
 })
 
@@ -86,11 +86,11 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                             </Link>
                         </li>
                         <li className={classes.BlankList}>
-                            <Link href="/" className={classes.LinkText}>
+                            <Link href="/note/add" className={classes.LinkText}>
                                 <IconButton className={classes.Button}>
                                     <NoteAddIcon className={classes.Icons}/>
                                 </IconButton>
-                                {'Add note'}
+                                {'Dodaj notatkę'}
                             </Link>
                         </li>
                     </ul>

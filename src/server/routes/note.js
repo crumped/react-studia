@@ -14,9 +14,10 @@ router.post('/add', async function(req, res){
     if(user_id !== 0)
     {
         const note = req.body.notes;
+        const title = req.body.title;
         console.log(note);
-        let values = "('"+note+"','1')";
-        let table ="files(content,active)";
+        let values = "('"+title+"','"+note+"','1')";
+        let table ="files(title,content,active)";
         manager.Insert(table, values);
         const filesCount = await manager.Select('files');
         //console.log(filesCount);
@@ -25,8 +26,13 @@ router.post('/add', async function(req, res){
         {
             values ="('"+filesCount.length+"','"+user_id[0]['id_user']+"','1','1')";
             table = "user_files(files_id,user_id,active,owner)";
-            manager.Insert(table, values);
+            await manager.Insert(table, values);
+            res.send("ok");
+        } else {
+            res.send("error");
         }
+    } else {
+        res.send("error");
     }
 })
 

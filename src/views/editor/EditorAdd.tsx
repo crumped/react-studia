@@ -21,7 +21,7 @@ const useStyles = makeStyles({
     }
 
 })
-const AddNote = (content:any) =>
+const AddNote = (content:any, title: string) =>
 {
     fetch("http://localhost:8080/note/add", {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -32,16 +32,18 @@ const AddNote = (content:any) =>
             'Content-Type': 'application/json'
             // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({notes:JSON.stringify(convertToRaw(content.getCurrentContent())), user:GetCookieFunction()})// body data type must match "Content-Type" header
+        body: JSON.stringify({title: title, notes:JSON.stringify(convertToRaw(content.getCurrentContent())), user:GetCookieFunction()})// body data type must match "Content-Type" header
     })
 }
 const EditorAdd = () => {
     const classes = useStyles();
+    const [title, setTitle] = useState('')
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
     return (
         <div className="App">
+            <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder={"Tytuł"}></input><br/>
             <Editor
                 defaultEditorState={editorState}
                 onEditorStateChange={setEditorState}
@@ -49,7 +51,7 @@ const EditorAdd = () => {
                 editorClassName={classes.EditorClass}
                 toolbarClassName={classes.ToolbarClass}
             />
-            <button onClick={() => AddNote(editorState)}>Send</button>
+            <button onClick={() => AddNote(editorState, title)}>Send</button>
         </div>
     )
 }
