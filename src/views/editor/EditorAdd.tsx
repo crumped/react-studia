@@ -32,8 +32,10 @@ const AddNote = (content:any, title: string) =>
             'Content-Type': 'application/json'
             // 'Content-Type': 'application/x-www-form-urlencoded',
         },
+
         body: JSON.stringify({title: title, notes:JSON.stringify(convertToRaw(content.getCurrentContent())), user:GetCookieFunction()})// body data type must match "Content-Type" header
     })
+
 }
 const EditorAdd = () => {
     const classes = useStyles();

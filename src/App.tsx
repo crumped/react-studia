@@ -20,7 +20,6 @@ const App = () => {
     //set cookie
 
 
-
     const [loggedIn, setLoggedIn] = useState(false)
 
 

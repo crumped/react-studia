@@ -88,4 +88,23 @@ router.post('/delete', async function(req, res) {
     }
 });
 
+router.post('/edit', async function(req, res){
+    const notes = req.body.notes;
+    const idFile = req.body.fileId;
+    const title = req.body.title;
+    const whereFile = "id_files = '" +idFile+"',title = '"+title+"'";
+    const isFileExist = await manager.Select("files","*",whereFile +'')
+
+    if(isFileExist.length !== 0){
+        const update = "content = '"+notes+"'";
+        await manager.Update("files", update, whereFile);
+        res.send({message: "updated"});
+    }
+    else {
+        res.send("error");
+    }
+
+
+})
+
 module.exports = router;

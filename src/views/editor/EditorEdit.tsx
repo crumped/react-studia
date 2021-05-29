@@ -24,48 +24,83 @@ const useStyles = makeStyles({
 
 })
 
-const EditNote = (content:any, fileId: string) =>
-{
-    // przerób metodę, żeby aktualizowała pola w bazie (obecnie dodaje)
-    fetch("http://localhost:8080/note/edit", {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'include', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({notes:JSON.stringify(convertToRaw(content.getCurrentContent())), user:GetCookieFunction()})// body data type must match "Content-Type" header
-    })
-}
+
 
 const EditorEdit = () => {
     const classes = useStyles();
     const { fileId }= useParams<EditorEditParams>();
-    console.log(fileId);
-
-    // request do wzięcia danych z bazy o kontekście z bazy
-
-    // kod który działa tylko trzeba go podpiąć pod odpowiednie zmienne i edytor
-    // const setOk = JSON.parse(res["myNotes"][0]["content"])
-    // setEditorState(EditorState.createWithContent(convertFromRaw(setOk)));
+    const [response, setResponse] = useState([]);
+    const [title, setTitle] = useState("");
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
+    // request do wzięcia danych z bazy o kontekście z bazy
+    // kod który działa tylko trzeba go podpiąć pod odpowiednie zmienne i edytor
+    // const setOk = JSON.parse(res["myNotes"][0]["content"])
+    // setEditorState(EditorState.createWithContent(convertFromRaw(setOk)));
+    const GetNote = (fileId: string) =>
+    {
+        // przerób metodę, żeby aktualizowała pola w bazie (obecnie dodaje)
+        fetch("http://localhost:8080/note/", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({fileId: fileId, user:GetCookieFunction()})// body data type must match "Content-Type" header
+        })
+            .then((response:Response) =>{
+                if(!response.ok){
+                    console.log("nope");
+                    return [];
+                }
+                else{
+                    return response.json();
+                }
+            })
+            .then((res) => {
+                if(res.length !==0){
+                    const content = JSON.parse(res[0]["content"])
+                    setEditorState(EditorState.createWithContent(convertFromRaw(content)));
+                    setTitle(res[0]["title"])
+                    setResponse(res);
+                }
+            })
+    }
+    const SendEdit = (content:any, fileId:string, title:string) =>
+    {
+        fetch("http://localhost:8080/note/edit", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({title:title, fileId: fileId, notes:JSON.stringify(convertToRaw(content.getCurrentContent()))})// body data type must match "Content-Type" header
+        })
+    }
+    React.useEffect(() => GetNote(fileId), []);
     return (
         <div className="App">
-            <Editor
-                defaultEditorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName={classes.WrapperClass}
-                editorClassName={classes.EditorClass}
-                toolbarClassName={classes.ToolbarClass}
-            />
 
-            <button onClick={() => EditNote(editorState, fileId)}>Send</button>
+            <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} />
+            {response.map(function(item, index) {
+                return <Editor
+                    defaultEditorState={editorState}
+                    onEditorStateChange={setEditorState}
+                    wrapperClassName={classes.WrapperClass}
+                    editorClassName={classes.EditorClass}
+                    toolbarClassName={classes.ToolbarClass}
+                />
+            })}
+            <button onClick={() => SendEdit(editorState,fileId,title)}>Send</button>
         </div>
     )
-}
+};
 
 export default EditorEdit;
