@@ -217,6 +217,27 @@ const Main = () => {
     };
 
 
+    const DeleteNote = (fileID: number) => {
+        fetch("http://localhost:8080/note/delete", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({user: GetCookieFunction(), fileId: fileID}) // body data type must match "Content-Type" header
+        })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("nope");
+                    return [];
+                }
+                else{
+                    GetList();
+                }
+            })
+    };
+
     const ListOfUsers = () => {
         fetch("http://localhost:8080/users/", {
             mode: 'cors', // no-cors, *cors, same-origin
@@ -316,7 +337,7 @@ const Main = () => {
                                     </IconButton>
                                 </Link>
                                 {/* dodaj funkcję usuwania pliku */}
-                                <IconButton onClick={() => null}>
+                                <IconButton onClick={() => DeleteNote(item["id_files"])}>
                                     <DeleteIcon />
                                 </IconButton>
                             </div>

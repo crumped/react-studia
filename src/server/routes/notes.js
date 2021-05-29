@@ -40,8 +40,8 @@ router.post('/list', async function(req, res) {
 
 
     if(user_id.length !== 0){
-        const where = "user_id = '" + user_id[0]["id_user"] + "'";
-        const notes = await manager.Select("user_files", "*", where +'');
+        const where = "user_id = '" + user_id[0]["id_user"] + "' and files.active=1";
+        const notes = await manager.Select("user_files left join files on files.id_files = user_files.files_id", "*", where +'');
 
         if(notes.length !== 0){
             let myNotesIds = [];
@@ -82,7 +82,7 @@ router.post('/list', async function(req, res) {
 
             let sharedNotes = [];
             if(whereSharedToMe !== ""){
-                whereSharedToMe = whereSharedToMe + " and owner = 1";
+                whereSharedToMe = whereSharedToMe + " and owner = 1 and files.active=1";
                 sharedNotes = await manager.Select("files left join user_files on files.id_files = user_files.files_id left join user on user_files.user_id = user.id_user", "*", whereSharedToMe +'');
             }
 

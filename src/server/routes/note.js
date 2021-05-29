@@ -49,7 +49,7 @@ router.post('/', async function(req, res) {
         const fileBelongTo = await manager.Select("user_files", "*", whereFilesBelong);
 
         if(fileBelongTo.length !== 0){
-            const whereFiles = "id_files = '" + fileId + "'";
+            const whereFiles = "id_files = '" + fileId + "' and active=1";
             const rows = await manager.Select("files", "*", whereFiles);
             res.send(rows);
         } else {
@@ -61,6 +61,31 @@ router.post('/', async function(req, res) {
 
 
     // res.send(rows);
+});
+
+router.post('/delete', async function(req, res) {
+    const username = req.body.user;
+    const fileId = req.body.fileId;
+    const whereUser = "user_name = '" + username + "'";
+    const user_id = await manager.Select("user", "id_user", whereUser +'');
+
+    if(user_id.length !== 0){
+
+        const whereUserFiles = "user_id = '" + user_id[0]["id_user"] + "' and files_id = '"+ fileId +"'";
+        const file = await manager.Select("user_files", "*", whereUserFiles +'');
+
+        if(file.length !== 0){
+            const where = "id_files = '" + fileId + "'";
+
+            await manager.Update("files", "active=0", where);
+
+            res.send({message: "updated"});
+        } else {
+            res.send("error");
+        }
+    } else {
+        res.send("error");
+    }
 });
 
 module.exports = router;
