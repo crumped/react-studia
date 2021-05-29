@@ -129,6 +129,7 @@ export interface MyNote {
     content: string;
     active: number;
     shared: Shared[];
+    title: string;
 }
 
 export interface TabPanelProps {
@@ -292,13 +293,7 @@ const Main = () => {
                     {myNotes.map(function(item, index){
                         return <div className={classes.Card}>
                             <div className={classes.HalfBox1}>
-                                <div className={classes.Desc}>
-                                    <Editor
-                                        defaultEditorState={editorState}
-                                        onEditorStateChange={setEditorState}
-                                        toolbarClassName={classes.ToolbarClass}
-                                    />
-                                </div>
+                                <div className={classes.Desc}>{item["title"]}</div>
                                 <div>
                                     <Autocomplete
                                         id="combo-box-demo"
@@ -336,7 +331,7 @@ const Main = () => {
                     {sharedNotes.map(function(item, index){
                         return <Link href={"/preview/"+item["id_files"]}>
                             <div className={classes.Card}>
-                                <div className={classes.Desc}>{item["content"]}</div>
+                                <div className={classes.Desc}>{item["title"]}</div>
                                 <div className={classes.OwnerDesc}>
                                     <div>Właściciel pliku:</div>
                                     <div>Imię: {item["first_name"]}</div>
