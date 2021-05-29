@@ -22,18 +22,22 @@ const db_query = async function (query) {
     });
 };
 
-exports.Insert = function(table, values){
+exports.Insert = async function(table, values){
 
     console.log("inside insert");
     console.log("Insert into " +table+" values"+values);
-    db.exec(`INSERT INTO ${table} VALUES${values};`, (err) => {
-        if(err){
-            console.error(err.message);
-            console.log("Error in Insert statement");
-        }
-        else{
-            console.log("Correct insert data");
-        }
+    return new Promise(function (resolve, reject) {
+        db.run(`INSERT INTO ${table} VALUES${values};`, function (err) {
+            if(err){
+                reject(err.message);
+                console.error(err.message);
+                console.log("Error in Insert statement");
+            }
+            else{
+                resolve(this.lastID);
+                console.log("Correct insert data");
+            }
+        });
     });
 }
 
