@@ -82,7 +82,7 @@ router.post('/list', async function(req, res) {
 
             let sharedNotes = [];
             if(whereSharedToMe !== ""){
-                whereSharedToMe = whereSharedToMe + " and owner = 1 and files.active=1";
+                whereSharedToMe = "("+whereSharedToMe + ") and owner = 1 and files.active=1";
                 sharedNotes = await manager.Select("files left join user_files on files.id_files = user_files.files_id left join user on user_files.user_id = user.id_user", "*", whereSharedToMe +'');
             }
 
