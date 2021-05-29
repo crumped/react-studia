@@ -70,7 +70,7 @@ const EditorEdit = () => {
                 }
             })
     }
-    const SendEdit = (content:any, fileId:string, title:string) =>
+    const SendEdit = (content:any, fileId:string) =>
     {
         fetch("http://localhost:8080/note/edit", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -81,7 +81,21 @@ const EditorEdit = () => {
                 'Content-Type': 'application/json'
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({title:title, fileId: fileId, notes:JSON.stringify(convertToRaw(content.getCurrentContent()))})// body data type must match "Content-Type" header
+            body: JSON.stringify({fileId: fileId, notes:JSON.stringify(convertToRaw(content.getCurrentContent()))})// body data type must match "Content-Type" header
+        })
+    }
+    const EditTitle = (title:string) =>
+    {
+        fetch("http://localhost:8080/note/editTitle", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'include', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({title:title, fileId: fileId})// body data type must match "Content-Type" header
         })
     }
     React.useEffect(() => GetNote(fileId), []);
@@ -89,6 +103,7 @@ const EditorEdit = () => {
         <div className="App">
 
             <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} />
+            <button onClick={() => EditTitle(title)}>Send</button>
             {response.map(function(item, index) {
                 return <Editor
                     defaultEditorState={editorState}
@@ -98,7 +113,7 @@ const EditorEdit = () => {
                     toolbarClassName={classes.ToolbarClass}
                 />
             })}
-            <button onClick={() => SendEdit(editorState,fileId,title)}>Send</button>
+            <button onClick={() => SendEdit(editorState,fileId)}>Send</button>
         </div>
     )
 };
