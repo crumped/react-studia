@@ -66,15 +66,26 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                                 <IconButton className={ classes.Button}>
                                     <AccountBoxIcon className={classes.Icons}/>
                                 </IconButton>
-                                { "View profile" }
+                                { "Zobacz profil" }
                             </Link>
                         </li>
+                    </ul>
+                    <h2 className={classes.SectionTitle}> Pages </h2>
+                    <ul>{/*Linki do stron*/}
                         <li className={classes.BlankList}>
                             <Link href="/" className={classes.LinkText}>
                                 <IconButton className={classes.Button}>
+                                    <HomeIcon className={classes.Icons} />
+                                </IconButton>
+                                {"Strona główna"}
+                            </Link>
+                        </li>
+                        <li className={classes.BlankList}>
+                            <Link href="/?tab=1" className={classes.LinkText}>
+                                <IconButton className={classes.Button}>
                                     <ShareIcon className={classes.Icons}/>
                                 </IconButton>
-                                { "Shared with me" }
+                                { "Udostępnione dla mnie" }
                             </Link>
                         </li>
                         <li className={classes.BlankList}>
@@ -82,7 +93,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                                 <IconButton className={classes.Button}>
                                     <NoteIcon className={classes.Icons}/>
                                 </IconButton>
-                                {"My notes"}
+                                {"Moje notatki"}
                             </Link>
                         </li>
                         <li className={classes.BlankList}>
@@ -94,25 +105,6 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                             </Link>
                         </li>
                     </ul>
-                    <h2 className={classes.SectionTitle}> Pages </h2>
-                    <ul>{/*Linki do stron*/}
-                        <li className={classes.BlankList}>
-                            <Link href="/" className={classes.LinkText}>
-                                <IconButton className={classes.Button}>
-                                    <HomeIcon className={classes.Icons} />
-                                </IconButton>
-                                {"Main Page"}
-                            </Link>
-                        </li>
-                        <li className={classes.BlankList}>
-                            <Link href="/" className={classes.LinkText}>
-                                <IconButton className={classes.Button}>
-                                    <PeopleIcon className={classes.Icons} />
-                                </IconButton>
-                                {"Find Friends Sadge"}
-                            </Link>
-                        </li>
-                    </ul>
                     <div className={classes.SectionLogout}>
                         <h2 className={classes.SectionTitle}> Logout </h2>
                     <ul>{/*Logout*/}
@@ -121,7 +113,7 @@ const SidePanel: React.FC<SidePanelProps> = ({ isOpen, setIsOpen }) => {
                                     <IconButton className={classes.Button}>
                                         <MeetingRoomIcon className={classes.Icons} />
                                     </IconButton>
-                                    {"Logout"}
+                                    {"Wyloguj"}
                                 </Link>
                             </li>
                         </ul>

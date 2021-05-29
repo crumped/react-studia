@@ -146,6 +146,19 @@ const Main = () => {
     const [sharedNotes, setSharedNotes] = React.useState([]);
     const [listOfUsers, setListOfUsers] = React.useState([]);
 
+    const GetTab = () => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const tab = urlParams.get('tab')
+        console.log(tab);
+        if(tab !== null){
+            const tabInt = Number(tab);
+            if(!isNaN(tabInt)){
+                setValue(tabInt);
+            }
+        }
+    }
+
     const GetList = () => {
         fetch("http://localhost:8080/notes/list", {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -170,8 +183,6 @@ const Main = () => {
             .then((res) => {
                 if("myNotes" in res)
                 {
-                    const setOk = JSON.parse(res["myNotes"][0]["content"])
-                    setEditorState(EditorState.createWithContent(convertFromRaw(setOk)));
                     setMyNotes(res["myNotes"]);
                 }
 
@@ -258,6 +269,7 @@ const Main = () => {
     React.useEffect(() => {
         GetList();
         ListOfUsers();
+        GetTab();
         }, [])
 
     const onSelectTag = (e: any, value: any, user: any) => {
@@ -265,12 +277,7 @@ const Main = () => {
         if(user != null && value !== null){
             ShareForUser(value["id_user"], user["id_files"]);
         }
-
     }
-
-    const [editorState, setEditorState] = useState(
-        () => EditorState.createEmpty(),
-    );
 
     return (
         <div className={classes.Container}>
