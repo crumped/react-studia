@@ -116,7 +116,14 @@ const EditorEdit = () => {
             {isEditMode ?
                 <input type="text" onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
                 :
-                <div onDoubleClick={changeToInput}>{title}</div>
+                <div>
+                    {title === "" ?
+                        <div onDoubleClick={changeToInput}>Empty</div>
+                        :
+                        <div onDoubleClick={changeToInput}>{title}</div>
+                    }
+                </div>
+
 
             }
 
