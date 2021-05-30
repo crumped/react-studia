@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ContentState, convertToRaw, convertFromRaw, EditorState } from 'draft-js';
+import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { makeStyles } from '@material-ui/core';
@@ -29,15 +29,13 @@ const useStyles = makeStyles({
 const EditorEdit = () => {
     const classes = useStyles();
     const { fileId }= useParams<EditorEditParams>();
+    const [isEditMode, setIsEditMode] = useState(false);
     const [response, setResponse] = useState([]);
     const [title, setTitle] = useState("");
     const [editorState, setEditorState] = useState(
         () => EditorState.createEmpty(),
     );
-    // request do wzięcia danych z bazy o kontekście z bazy
-    // kod który działa tylko trzeba go podpiąć pod odpowiednie zmienne i edytor
-    // const setOk = JSON.parse(res["myNotes"][0]["content"])
-    // setEditorState(EditorState.createWithContent(convertFromRaw(setOk)));
+
     const GetNote = (fileId: string) =>
     {
         // przerób metodę, żeby aktualizowała pola w bazie (obecnie dodaje)
@@ -98,12 +96,31 @@ const EditorEdit = () => {
             body: JSON.stringify({title:title, fileId: fileId})// body data type must match "Content-Type" header
         })
     }
+
+    const changeToInput = () => {
+        setIsEditMode(!isEditMode);
+    }
+
+    const handleKeyDown = (event:any) => {
+        if (event.key === 'Enter') {
+            EditTitle(title);
+            setIsEditMode(!isEditMode);
+            console.log('do validate')
+        }
+    }
+
     React.useEffect(() => GetNote(fileId), []);
+
     return (
         <div className="App">
 
-            <input type="text" onChange={(e) => setTitle(e.target.value)} value={title} />
-            <button onClick={() => EditTitle(title)}>Send</button>
+            {isEditMode ?
+                <input type="text" onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
+                :
+                <div onDoubleClick={changeToInput}>{title}</div>
+
+            }
+
             {response.map(function(item, index) {
                 return <Editor
                     defaultEditorState={editorState}
@@ -111,9 +128,9 @@ const EditorEdit = () => {
                     wrapperClassName={classes.WrapperClass}
                     editorClassName={classes.EditorClass}
                     toolbarClassName={classes.ToolbarClass}
+                    onChange={() => SendEdit(editorState, fileId)}
                 />
             })}
-            <button onClick={() => SendEdit(editorState,fileId)}>Send</button>
         </div>
     )
 };
