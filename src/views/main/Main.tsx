@@ -324,7 +324,7 @@ const Main = () => {
                                 <div className={classes.Desc}>{item["title"]}</div>
                                 <div>
                                     <Autocomplete
-                                        id="combo-box-demo"
+                                        id={`combo-box-${index}`}
                                         options={listOfUsers}
                                         getOptionLabel={(option) => `${option["first_name"]} ${option["first_name"]}`}
                                         onChange={(event, value, reason, details) => onSelectTag(event, value, item)}
