@@ -7,6 +7,7 @@ import MainGuest from './views/main/MainGuest';
 import Login from './views/login/Login';
 import SignUp from './views/signup/Signup';
 import Page404 from './views/page404/page404';
+import UserPage from './views/userpage/UserPage';
 import EditorAdd from './views/editor/EditorAdd';
 import EditorEdit from './views/editor/EditorEdit';
 import SharedNote from './views/sharednote/SharedNote';
@@ -45,6 +46,7 @@ const App = () => {
                       <Route path="/" component={Main} exact />
                       <Route path="/logout" component={Logout} />
                       <Route path="/editor" component={EditorAdd} />
+                      <Route path="/userpage" component={UserPage} />
                       <Route path="/note/add" component={EditorAdd} />
                       <Route path="/note/edit/:fileId" component={EditorEdit} />
                       <Route path="/preview/:fileId" component={SharedNote} />
