@@ -45,6 +45,9 @@ export const useStyles = makeStyles({
         textAlign:'center',
         padding:"1.5em 8em",
         margin:"0.5em",
+        "&:hover": {
+            cursor: "pointer",
+        },
     },
     ValidationDiv:{
         color:"red",
@@ -97,16 +100,20 @@ const Login: React.FC<LoginProps> = ({loggedIn, setLoggedIn}) => {
 
     };
 
-
+    const handleKeyDown = (event:any) => {
+        if (event.key === 'Enter') {
+            ValidLoginForm();
+        }
+    }
 
     return (
         <div className = {classes.Wrapper}>
             <div className = {classes.FormContent}>
-                Login xd
+                Login
           <pre>
 
-              <input className={classes.Input} type="text" onChange={(e) => setUsername(e.target.value)} placeholder={"login"}></input> <br />
-              <input className={classes.Input} type="password" onChange={(e) => setPassword(e.target.value)} placeholder={"password"}></input> <br />
+              <input name={"username"} className={classes.Input} type="text" onKeyDown={handleKeyDown} onChange={(e) => setUsername(e.target.value)} placeholder={"login"} /> <br />
+              <input name={"password"} className={classes.Input} type="password" onKeyDown={handleKeyDown} onChange={(e) => setPassword(e.target.value)} placeholder={"password"} /> <br />
               <button className={classes.Button} onClick={() => ValidLoginForm()}>Sign in</button>
           </pre>
                 {

@@ -105,7 +105,6 @@ const EditorEdit = () => {
         if (event.key === 'Enter') {
             EditTitle(title);
             setIsEditMode(!isEditMode);
-            console.log('do validate')
         }
     }
 
