@@ -19,7 +19,40 @@ const useStyles = makeStyles({
     },
     ToolbarClass: {
         border: "1px solid #ccc",
-    }
+    },
+    TitleClass: {
+        border: "2px solid black",
+        borderRadius: "20px",
+        outline: "none",
+        height: "75px",
+        width: "300px",
+        textAlign: "left",
+        fontSize: "36px",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        padding: "1rem",
+        marginBottom: "5px",
+        marginTop: "25px",
+        
+    },
+    Button: {
+        margin: "35px",
+        width: "150px",
+        minWidth: "150px",
+        height: "50px",
+        backgroundColor: "white",
+        color: "black",
+        border: "2px solid #3f51b5",
+        borderRadius: "10px",
+        fontSize: "18px",
+        '&:hover': {
+            backgroundColor: "#3f51b5",
+            color: "white",
+            border: "none",
+            cursor: "pointer"
+        }
+    },
 
 })
 const AddNote = (content:any, title: string) =>
@@ -59,8 +92,8 @@ const EditorAdd = () => {
     );
     return (
         <div className="App">
-            <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder={"Tytuł"}></input><br/>
-            <button onClick={() => AddNote(editorState, title)}>Send</button>
+            <input className={classes.TitleClass} type="text" onChange={(e) => setTitle(e.target.value)} placeholder={"Tytuł"}></input><br />
+            <button className={classes.Button} onClick={() => AddNote(editorState, title)}>Dodaj</button>
         </div>
     )
 }
