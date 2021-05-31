@@ -4,6 +4,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { IconButton, makeStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import ClearIcon from '@material-ui/icons/Clear';
 import {GetCookieFunction} from "../../functions/Cookies";
 import {useParams} from "react-router";
 
@@ -49,7 +50,7 @@ const useStyles = makeStyles({
         padding: "1rem",
         marginBottom: "5px",
         marginTop: "5px",
-        
+
     },
     InlineText: {
         display: "inline",
@@ -148,11 +149,11 @@ const EditorEdit = () => {
             {isEditMode ?
                 <div>
                     <input type="text" className={classes.TitleClassInput} onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
-                    <IconButton>
+                    <IconButton onClick={() => EditTitle(title)}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton>
-                        <EditIcon />
+                    <IconButton onClick={changeToInput}>
+                        <ClearIcon />
                     </IconButton>
                 </div>
                 :
@@ -163,7 +164,7 @@ const EditorEdit = () => {
                         :
                         <div onDoubleClick={changeToInput} className={classes.InlineText}>{title}</div>
                     }
-                    <IconButton>
+                    <IconButton onClick={changeToInput}>
                         <EditIcon />
                     </IconButton>
                 </div>
