@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import {GetCookieFunction} from "../../functions/Cookies";
 import {useParams} from "react-router";
 
@@ -22,11 +23,11 @@ const useStyles = makeStyles({
         border: "1px solid #ccc",
     },
     TitleClass: {
-        border: "3px solid black",
+        display: "inline-block",
         height: "75px",
         width: "97.5%",
-        
         textAlign: "left",
+        lineHeight: "75px",
         fontSize: "36px",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
@@ -35,13 +36,11 @@ const useStyles = makeStyles({
         marginLeft: "0.5%",
         marginBottom: "5px",
         marginTop: "5px",
-
     },
     TitleClassInput: {
-        border: "3px solid black",
+        border: "3px solid #3f51b5",
         height: "75px",
-        width: "96.5%",
-        
+        width: "90%",
         textAlign: "left",
         fontSize: "36px",
         textOverflow: "ellipsis",
@@ -50,6 +49,10 @@ const useStyles = makeStyles({
         padding: "1rem",
         marginBottom: "5px",
         marginTop: "5px",
+        
+    },
+    InlineText: {
+        display: "inline",
     }
 })
 
@@ -143,14 +146,26 @@ const EditorEdit = () => {
         <div className="App">
 
             {isEditMode ?
-                <input type="text" className={classes.TitleClassInput} onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
+                <div>
+                    <input type="text" className={classes.TitleClassInput} onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
+                </div>
                 :
                 <div className={classes.TitleClass} >
                     {title === "" ?
-                        <div onDoubleClick={changeToInput}>Empty</div>
+
+                        <div onDoubleClick={changeToInput} className={classes.InlineText}>Empty</div>
                         :
-                        <div onDoubleClick={changeToInput}>{title}</div>
+                        <div onDoubleClick={changeToInput} className={classes.InlineText}>{title}</div>
                     }
+                    <IconButton>
+                        <EditIcon />
+                    </IconButton>
                 </div>
 
 
