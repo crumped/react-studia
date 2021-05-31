@@ -20,8 +20,37 @@ const useStyles = makeStyles({
     },
     ToolbarClass: {
         border: "1px solid #ccc",
-    }
+    },
+    TitleClass: {
+        border: "3px solid black",
+        height: "75px",
+        width: "97.5%",
+        
+        textAlign: "left",
+        fontSize: "36px",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        padding: "1rem",
+        marginLeft: "0.5%",
+        marginBottom: "5px",
+        marginTop: "5px",
 
+    },
+    TitleClassInput: {
+        border: "3px solid black",
+        height: "75px",
+        width: "96.5%",
+        
+        textAlign: "left",
+        fontSize: "36px",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        padding: "1rem",
+        marginBottom: "5px",
+        marginTop: "5px",
+    }
 })
 
 
@@ -114,9 +143,9 @@ const EditorEdit = () => {
         <div className="App">
 
             {isEditMode ?
-                <input type="text" onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
+                <input type="text" className={classes.TitleClassInput} onKeyDown={handleKeyDown} onChange={(e) => setTitle(e.target.value)} value={title} />
                 :
-                <div>
+                <div className={classes.TitleClass} >
                     {title === "" ?
                         <div onDoubleClick={changeToInput}>Empty</div>
                         :

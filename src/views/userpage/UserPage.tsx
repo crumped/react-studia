@@ -84,7 +84,7 @@ const UserProfile = () => {
                     <div className={classes.LabelP}>Haslo:</div><input className={classes.Input} />
                     <div className={classes.LabelP}>Powtorz Haslo:</div><input className={classes.Input} />
                 </div>
-                <button className={classes.Button} > Potwierdz</button>
+                <button className={classes.Button} >Potwierdz</button>
             </div>
         </div>
         
